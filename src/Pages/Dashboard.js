@@ -123,39 +123,43 @@ const Dashboard = () => {
   if (!user) {
     return (
       <div className="container text-center mt-5">
-        <h2>Login to Access Dashboard</h2>
-        <button className="btn btn-primary" onClick={handleGoogleLogin}>
-          Sign in with Google
+        <h2 className="display-4 mb-4">Login to Access Dashboard</h2>
+        <button className="btn btn-outline-primary btn-lg" onClick={handleGoogleLogin}>
+          <i className="bi bi-google me-2"></i> Sign in with Google
         </button>
       </div>
     );
   }
 
   return (
-    <div className="container mt-4">
-      <div className="d-flex justify-content-between">
-        <h2>Document Upload</h2>
-        <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+    <div className="container mt-5">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2>📂 Document Upload</h2>
+        <button className="btn btn-outline-danger" onClick={handleLogout}>
+          <i className="bi bi-box-arrow-right me-2"></i> Logout
+        </button>
       </div>
 
       {/* Add Applicant Section */}
-      <div className="d-flex justify-content-end mb-3">
+      <div className="mb-4 text-end">
         <button className="btn btn-primary" onClick={handleAddApplicant}>
-          + Add Applicant
+          <i className="bi bi-person-plus me-2"></i> Add Applicant
         </button>
       </div>
 
       {/* Applicant Profile Section */}
       {applicants.length > 0 && (
-        <div className="mt-4 p-3 border rounded bg-light">
-          <h4>Applicant: {applicants[currentApplicantIndex]?.name}</h4>
-          <button className="btn btn-danger btn-sm mt-2" onClick={handleDeleteApplicant}>
-            🗑 Delete Profile
-          </button>
-          <div className="mt-3">
-            <button className="btn btn-success" onClick={handleAddDocument}>
-              📄 + Add Document
+        <div className="card shadow-sm mb-4">
+          <div className="card-body">
+            <h4 className="card-title">Applicant: {applicants[currentApplicantIndex]?.name}</h4>
+            <button className="btn btn-danger btn-sm mt-2" onClick={handleDeleteApplicant}>
+              🗑 Delete Profile
             </button>
+            <div className="mt-3">
+              <button className="btn btn-success" onClick={handleAddDocument}>
+                <i className="bi bi-file-earmark-plus me-2"></i> Add Document
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -165,31 +169,33 @@ const Dashboard = () => {
         <div>
           <h5>Documents for {applicants[currentApplicantIndex]?.name}</h5>
           {documents[applicants[currentApplicantIndex].id].map((doc) => (
-            <div key={doc.id} className="mt-3 p-3 border rounded bg-white">
-              <h6>{doc.name}</h6>
-              <button className="btn btn-danger btn-sm mb-2" onClick={() => handleDeleteDocument(doc.id)}>
-                X
-              </button>
-              <DropzoneComponent
-                docId={doc.id}
-                onDrop={(files) => handleFileChange(doc.id, files)}
-              />
-              {doc.files.length > 0 && (
-                <div className="mt-3">
-                  <h6>Uploaded Files:</h6>
-                  {doc.files.map((file, index) => (
-                    <div key={index} className="mt-2 d-flex align-items-center border p-2 rounded">
-                      <span className="me-2">{file.name}</span>
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleRemoveFile(doc.id, index)}
-                      >
-                        🗑 Remove
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div key={doc.id} className="card shadow-sm mb-4">
+              <div className="card-body">
+                <h6>{doc.name}</h6>
+                <button className="btn btn-danger btn-sm mb-2" onClick={() => handleDeleteDocument(doc.id)}>
+                  <i className="bi bi-trash"></i> Delete
+                </button>
+                <DropzoneComponent
+                  docId={doc.id}
+                  onDrop={(files) => handleFileChange(doc.id, files)}
+                />
+                {doc.files.length > 0 && (
+                  <div className="mt-3">
+                    <h6>Uploaded Files:</h6>
+                    {doc.files.map((file, index) => (
+                      <div key={index} className="d-flex justify-content-between align-items-center border p-2 rounded mb-2">
+                        <span>{file.name}</span>
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleRemoveFile(doc.id, index)}
+                        >
+                          <i className="bi bi-trash"></i> Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -199,18 +205,18 @@ const Dashboard = () => {
       {applicants.length > 1 && (
         <div className="d-flex justify-content-between mt-3">
           <button
-            className="btn btn-secondary"
+            className="btn btn-outline-secondary"
             onClick={handlePrevApplicant}
             disabled={currentApplicantIndex === 0}
           >
-            next
+            <i className="bi bi-arrow-left"></i> Prev
           </button>
           <button
-            className="btn btn-secondary"
+            className="btn btn-outline-secondary"
             onClick={handleNextApplicant}
             disabled={currentApplicantIndex === applicants.length - 1}
           >
-            back
+            Next <i className="bi bi-arrow-right"></i>
           </button>
         </div>
       )}
@@ -227,7 +233,7 @@ const DropzoneComponent = ({ docId, onDrop }) => {
   return (
     <div
       {...getRootProps()}
-      className={`p-4 text-center border rounded ${isDragActive ? "bg-secondary text-white" : "bg-light"}`}
+      className={`p-4 text-center border rounded ${isDragActive ? "bg-secondary text-black" : "bg-light"}`}
       style={{ cursor: "pointer" }}
     >
       <input {...getInputProps()} />
